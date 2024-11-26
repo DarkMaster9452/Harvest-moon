@@ -1,1 +1,346 @@
+Vytvoriť UI:
 
+Pridaj Text UI komponent pre odpočet.
+Pridaj Input Field na zadávanie odpovede.
+Pridaj Button pre potvrdenie odpovede.
+Pridaj Text pre hádanku („Kto má mnoho zubov a aj tak nič neje?“).
+Priprav dve scény:
+Scéna 1: Hlavná hra s UI a odpočtom.
+Scéna 2: Výhra a prehra (zobrazovanie animácie alebo GAME OVER).
+Napísať C# skripty:
+
+Skript na správu odpočtu.
+Skript na kontrolu odpovede.
+Skript na animáciu balónov.
+1. Skript: CountdownManager
+Tento skript spravuje odpočet a zmenu farieb podľa času.
+
+csharp
+Copy code
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
+public class CountdownManager : MonoBehaviour
+{
+    public Text countdownText; // Text na zobrazenie odpočtu
+    public float countdownTime = 20f; // Počiatočný čas
+
+    void Update()
+    {
+        countdownTime -= Time.deltaTime; // Odpočítavanie času
+        countdownText.text = Mathf.Ceil(countdownTime).ToString(); // Zobraz čas ako celé číslo
+
+        // Zmena farby podľa času
+        if (countdownTime < 10 && countdownTime > 5)
+        {
+            countdownText.color = Color.yellow;
+        }
+        else if (countdownTime <= 5)
+        {
+            countdownText.color = Color.red;
+        }
+
+        // Ak čas klesne pod 0, hráč prehráva
+        if (countdownTime <= 0)
+        {
+            SceneManager.LoadScene("GameOver"); // Presuň na scénu pre prehru
+        }
+    }
+}
+2. Skript: AnswerManager
+Tento skript spravuje kontrolu odpovede a výhru.
+
+csharp
+Copy code
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
+public class AnswerManager : MonoBehaviour
+{
+    public InputField answerInput; // Input pole na zadanie odpovede
+    public Button submitButton; // Tlačidlo na potvrdenie
+    private string[] correctAnswers = { "hrebeň", "Hrebeň", "HREBEŇ", "hrebienok" };
+
+    void Start()
+    {
+        submitButton.onClick.AddListener(CheckAnswer); // Pripojenie kontroly k tlačidlu
+    }
+
+    void CheckAnswer()
+    {
+        string userAnswer = answerInput.text.Trim();
+
+        // Kontrola odpovede
+        foreach (string answer in correctAnswers)
+        {
+            if (userAnswer.Equals(answer))
+            {
+                SceneManager.LoadScene("Win"); // Presuň na výhernú scénu
+                return;
+            }
+        }
+
+        // Ak odpoveď nie je správna, pokračuj v hre
+        Debug.Log("Nesprávna odpoveď!");
+    }
+}
+3. Skript: BalloonAnimation
+Tento skript spravuje pohyb balónov v scéne výhry.
+
+csharp
+Copy code
+using UnityEngine;
+
+public class BalloonAnimation : MonoBehaviour
+{
+    public float speed = 2f; // Rýchlosť pohybu
+    public float swayAmount = 1f; // Mierne kývanie
+
+    private float initialX;
+
+    void Start()
+    {
+        initialX = transform.position.x;
+    }
+
+    void Update()
+    {
+        // Pohyb balónov smerom hore
+        transform.Translate(Vector3.up * speed * Time.deltaTime);
+
+        // Mierne kývanie do strán
+        float sway = Mathf.Sin(Time.time * speed) * swayAmount;
+        transform.position = new Vector3(initialX + sway, transform.position.y, transform.position.z);
+    }
+}
+4. Scény
+Game Scene (Hlavná hra):
+UI obsahuje:
+Text na odpočet (CountdownManager).
+Text s hádankou.
+Input Field.
+Button (AnswerManager).
+GameOver Scene:
+Text: „GAME OVER“.
+Automatický návrat do menu alebo ukončenie.
+Win Scene:
+Pridaj objekty balónov (prefaby), ktoré majú pripojený BalloonAnimation.
+Pridaj Text: „YOU WIN!“.
+5. Nastavenie Unity
+Vytvor dve scény:
+
+GameOver s červeným textom: „GAME OVER“.
+Win s animáciou balónov a textom „YOU WIN!“.
+Pridaj scény do Build Settings:
+
+Klikni na File → Build Settings.
+Uisti sa, že všetky scény sú pridané v správnom poradí (Hlavná hra, Win, GameOver).
+6. Výsledok
+Hra: Spustí odpočet, zobrazí hádanku, a hráč môže odpovedať.
+Výhra: Pri správnej odpovedi sa spustí scéna s balónmi.
+Prehra: Ak odpočet skončí, presunie sa na scénu „GAME OVER“.
+Ak potrebuješ podrobnejšie vysvetlenie alebo pomoc s implementáciou, daj vedieť! 😊
+
+
+
+
+
+
+You said:
+podrobnejšie vysvetliť kde priradit kody a tak
+ChatGPT said:
+ChatGPT
+Rád ti podrobne vysvetlím, ako implementovať kódy a kde ich presne priradiť, aby všetko fungovalo správne. Postupuj podľa krokov:
+
+1. Príprava scény v Unity
+Predtým než priradíme kódy, je potrebné pripraviť scény a UI prvky.
+
+Hlavná scéna (Game Scene):
+Vytvor novú scénu:
+
+Klikni na File → New Scene.
+Ulož scénu ako GameScene.
+Pridaj Text na odpočet:
+
+Klikni na GameObject → UI → Text (TextMeshPro).
+Umiestni ho do pravého horného rohu (pomocou Rect Transform).
+Premenuj Text na CountdownText.
+Zmeň jeho text na „20“ a farbu na zelenú (môžeš ju neskôr upravovať cez skript).
+Nastav veľkosť fontu na väčšiu (napr. 50).
+Pridaj hádanku:
+
+Klikni na GameObject → UI → Text (TextMeshPro).
+Umiestni text do stredu obrazovky.
+Premenuj ho na RiddleText.
+Nastav text: „Kto má mnoho zubov a aj tak nič neje?“
+Nastav veľkosť fontu na väčšiu (napr. 30).
+Pridaj Input Field:
+
+Klikni na GameObject → UI → Input Field (TextMeshPro).
+Umiestni ho pod text s hádankou.
+Premenuj ho na AnswerInput.
+Pridaj tlačidlo:
+
+Klikni na GameObject → UI → Button (TextMeshPro).
+Premenuj ho na SubmitButton.
+Uprav text tlačidla (vo vnútri tlačidla) na „Odpovedať“.
+Pridaj pozadie (voliteľné):
+
+Klikni na GameObject → UI → Image.
+Umiestni obrázok cez celú obrazovku a nastav mu farbu alebo textúru.
+GameOver scéna:
+Vytvor novú scénu:
+
+Klikni na File → New Scene.
+Ulož scénu ako GameOverScene.
+Pridaj červený text:
+
+Klikni na GameObject → UI → Text (TextMeshPro).
+Premenuj ho na GameOverText.
+Nastav text: „GAME OVER“.
+Nastav farbu na červenú a veľkosť fontu na veľkú (napr. 80).
+Umiestni ho do stredu obrazovky.
+Win scéna:
+Vytvor novú scénu:
+
+Klikni na File → New Scene.
+Ulož scénu ako WinScene.
+Pridaj text:
+
+Klikni na GameObject → UI → Text (TextMeshPro).
+Premenuj ho na WinText.
+Nastav text: „YOU WIN!“.
+Nastav veľkosť fontu na veľkú (napr. 80).
+Umiestni ho do stredu obrazovky.
+Pridaj balóny:
+
+Vytvor GameObject → 2D Object → Sprite pre balón.
+Premenuj ho na Balloon.
+Pridaj komponent Rigidbody2D a nastav mu vlastnosť Gravity Scale na 0 (aby balón nepadal).
+Duplikuj balón a rozmiestni ich na spodnú časť obrazovky.
+2. Pridanie skriptov
+Po vytvorení scény priradíme kódy.
+
+Skript 1: CountdownManager
+Vytvor nový skript:
+
+Klikni na Assets → Pravé tlačidlo → Create → C# Script.
+Pomenuj skript CountdownManager.
+Otvor ho v editore a vlož kód:
+
+csharp
+Copy code
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
+public class CountdownManager : MonoBehaviour
+{
+    public Text countdownText;
+    public float countdownTime = 20f;
+
+    void Update()
+    {
+        countdownTime -= Time.deltaTime;
+        countdownText.text = Mathf.Ceil(countdownTime).ToString();
+
+        if (countdownTime < 10 && countdownTime > 5)
+            countdownText.color = Color.yellow;
+        else if (countdownTime <= 5)
+            countdownText.color = Color.red;
+
+        if (countdownTime <= 0)
+            SceneManager.LoadScene("GameOverScene");
+    }
+}
+Priradenie skriptu:
+
+Vyber hlavný objekt (napr. Canvas).
+Pridaj tento skript cez Add Component.
+Pretiahni CountdownText do premennej countdownText v Inspector.
+Skript 2: AnswerManager
+Vytvor nový skript s názvom AnswerManager.
+
+Vlož kód:
+
+csharp
+Copy code
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
+public class AnswerManager : MonoBehaviour
+{
+    public InputField answerInput;
+    public Button submitButton;
+
+    private string[] correctAnswers = { "hrebeň", "Hrebeň", "HREBEŇ" };
+
+    void Start()
+    {
+        submitButton.onClick.AddListener(CheckAnswer);
+    }
+
+    void CheckAnswer()
+    {
+        string userAnswer = answerInput.text.Trim();
+
+        foreach (string answer in correctAnswers)
+        {
+            if (userAnswer.Equals(answer))
+            {
+                SceneManager.LoadScene("WinScene");
+                return;
+            }
+        }
+
+        Debug.Log("Nesprávna odpoveď!");
+    }
+}
+Priradenie skriptu:
+
+Vyber SubmitButton.
+Pridaj tento skript cez Add Component.
+Pretiahni AnswerInput a SubmitButton do premenných v Inspector.
+Skript 3: BalloonAnimation (Win Scéna)
+Vytvor nový skript s názvom BalloonAnimation.
+
+Vlož kód:
+
+csharp
+Copy code
+using UnityEngine;
+
+public class BalloonAnimation : MonoBehaviour
+{
+    public float speed = 2f;
+    public float swayAmount = 1f;
+
+    private float initialX;
+
+    void Start()
+    {
+        initialX = transform.position.x;
+    }
+
+    void Update()
+    {
+        transform.Translate(Vector3.up * speed * Time.deltaTime);
+
+        float sway = Mathf.Sin(Time.time * speed) * swayAmount;
+        transform.position = new Vector3(initialX + sway, transform.position.y, transform.position.z);
+    }
+}
+Priradenie skriptu:
+
+Vyber každý balón v WinScene.
+Pridaj tento skript cez Add Component.
+3. Nastavenie Build Settings
+Klikni na File → Build Settings.
+Pridaj všetky scény kliknutím na Add Open Scenes.
+Uisti sa, že poradie scén je:
+GameScene
+GameOverScene
+WinScene.
