@@ -1,1 +1,3 @@
-
+git rm -r Scripts
+git commit -m "Delete Scripts directory"
+git push origin main
