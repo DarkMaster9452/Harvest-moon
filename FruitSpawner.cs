@@ -7,6 +7,8 @@ public class FruitSpawner : MonoBehaviour
     public float spawnInterval = 3f;   
     [SerializeField]public bool spawnute = false;
     public float timer;
+   public Transform treePosition;       
+    public float spawnRadius = 2f;      
 
 
     private void Start()
