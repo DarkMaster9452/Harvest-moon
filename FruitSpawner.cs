@@ -13,7 +13,8 @@ public class FruitSpawner : MonoBehaviour
 
     private void Start()
     {
-        Spawn();
+        Spawn(); 
+         Vector3 spawnPosition = treePosition.position + new Vector3(Random.Range(-spawnRadius, spawnRadius),Random.Range(0.5f, 2f), 0 );
     }
     private void Update()
     {
