@@ -27,20 +27,7 @@ public class FruitSpawner : MonoBehaviour
 
     }
 
-    /*
-    private IEnumerator SpawnovanieCoroutine()
-    {
-        if (!spawnute)
-        {
-
-            yield return new WaitForSeconds(spawnInterval);
-
-        }
-
-
-    
-    }
-    */
+  
     public void Spawn()
     {
 
