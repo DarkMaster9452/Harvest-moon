@@ -1,0 +1,248 @@
+
+Tu je ukážkový kód pre Unity, kde vytvoríš tlačidlo a textové pole (input field), do ktorého môžeš zadať text, a po stlačení tlačidla sa tento text vypíše do konzoly.
+
+Nastav si scénu v Unity:
+
+Pridaj Canvas do scény (ak ešte nie je).
+Pridaj do Canvasu objekt Input Field (UI → Input Field).
+Pridaj tlačidlo Button (UI → Button).
+Pridaj komponent Text na tlačidlo, aby malo popis ako "Odoslať".
+Napíš kód v C#:
+
+Vytvor nový skript s názvom InputToConsole a priraď ho ku Canvasu alebo inému vhodnému objektu.
+
+Skript InputToConsole.cs
+csharp
+Copy code
+using UnityEngine;
+using UnityEngine.UI;
+
+public class InputToConsole : MonoBehaviour
+{
+    public InputField inputField; // Odkaz na Input Field
+    public Button submitButton;  // Odkaz na Button
+
+    void Start()
+    {
+        // Pripojenie funkcie k tlačidlu
+        submitButton.onClick.AddListener(OnSubmit);
+    }
+
+    void OnSubmit()
+    {
+        string inputText = inputField.text; // Získanie textu z Input Field
+        if (!string.IsNullOrEmpty(inputText))
+        {
+            Debug.Log($"Zadaný text: {inputText}");
+        }
+        else
+        {
+            Debug.Log("Nebolo zadané nič.");
+        }
+    }
+}
+Nastavenie referencií:
+
+Pretiahni objekt Input Field do poľa InputField v inšpektorovi (pri priradenom skripte).
+Pretiahni tlačidlo Button do poľa SubmitButton v inšpektorovi.
+Testovanie:
+
+Spusti hru, napíš text do vstupného poľa a stlač tlačidlo. Text by sa mal vypísať do konzoly.
+Hotovo! 😊 Ak potrebuješ ďalšie vylepšenia, daj vedieť.
+
+
+
+
+
+
+You said:
+urob mi to so slovami kamen papier nožnic
+ChatGPT said:
+ChatGPT
+Tento kód umožní užívateľovi zadať jedno zo slov „kameň“, „papier“ alebo „nožnice“ do vstupného poľa, a po kliknutí na tlačidlo sa vypíše do konzoly, či zadal platné slovo, alebo nie.
+
+Krok 1: Nastavenie scény
+Pridaj Canvas do scény (ak ešte nie je).
+Pridaj k nemu Input Field (UI → Input Field) na zadanie textu.
+Pridaj tlačidlo Button (UI → Button) a zmeň text na tlačidle na „Odoslať“.
+Pridaj Text komponent (voliteľne) pre popis alebo spätnú väzbu.
+Krok 2: Skript v C#
+Vytvor nový skript s názvom RockPaperScissors a priraď ho ku Canvasu alebo inému vhodnému objektu.
+
+Kód: RockPaperScissors.cs
+csharp
+Copy code
+using UnityEngine;
+using UnityEngine.UI;
+
+public class RockPaperScissors : MonoBehaviour
+{
+    public InputField inputField; // Vstupné pole
+    public Button submitButton;  // Tlačidlo
+    public Text feedbackText;    // Text pre spätnú väzbu (voliteľné)
+
+    void Start()
+    {
+        // Pripojenie funkcie k tlačidlu
+        submitButton.onClick.AddListener(OnSubmit);
+    }
+
+    void OnSubmit()
+    {
+        string inputText = inputField.text.ToLower(); // Získanie textu z Input Field a prevod na malé písmená
+
+        // Overenie zadaného textu
+        if (inputText == "kameň" || inputText == "papier" || inputText == "nožnice")
+        {
+            Debug.Log($"Platný výber: {inputText}");
+            if (feedbackText != null)
+            {
+                feedbackText.text = $"Zvolil si: {inputText}";
+            }
+        }
+        else
+        {
+            Debug.Log("Neplatný výber. Zadaj 'kameň', 'papier' alebo 'nožnice'.");
+            if (feedbackText != null)
+            {
+                feedbackText.text = "Neplatný výber. Skús znova.";
+            }
+        }
+
+        inputField.text = ""; // Vymaže vstupné pole
+    }
+}
+Krok 3: Nastavenie referencií
+Pretiahni Input Field do poľa InputField v inšpektorovi (pri priradenom skripte).
+Pretiahni Button do poľa SubmitButton.
+Ak chceš spätnú väzbu na obrazovke, pridaj Text komponent a pretiahni ho do poľa FeedbackText.
+Krok 4: Testovanie
+Spusti hru v Unity.
+Zadaj do vstupného poľa „kameň“, „papier“ alebo „nožnice“.
+Klikni na tlačidlo a sleduj správu v konzole alebo spätnú väzbu na obrazovke.
+Výstupy:
+
+Ak zadáš „kameň“, „papier“ alebo „nožnice“, dostaneš správu: „Platný výber: [zadané slovo]“.
+Pri inom texte sa zobrazí: „Neplatný výber. Skús znova.“
+
+
+
+
+
+You said:
+urob mi tu ulohu v štýle zombotron inventar
+ChatGPT said:
+ChatGPT
+Vytvoriť jednoduchý inventár v štýle Zombotron vyžaduje nasimulovať mechanizmus, kde užívateľ pridáva predmety do inventára a tieto sa zobrazujú v užívateľskom rozhraní. Zameriame sa na mechanizmus pridania slov „kameň“, „papier“ a „nožnice“ do inventára a ich vizualizáciu ako ikony alebo text v mriežke.
+
+Krok 1: Nastavenie scény
+Canvas:
+
+Pridaj Canvas do scény (ak ešte nie je).
+Pridaj Panel na Canvas, ktorý bude slúžiť ako zobrazenie inventára (nastav pozadie, aby vyzeralo ako okno inventára).
+Inventárna mriežka:
+
+Do panelu pridaj Grid Layout Group (GameObject → UI → Empty Object a pridaj komponent Grid Layout Group).
+Nastav parametre mriežky (Cell Size, Spacing) pre rozloženie ikon inventára.
+Input Field a Button:
+
+Pridaj Input Field pre zadávanie slov.
+Pridaj Button, ktorý bude pridávať predmety do inventára.
+Krok 2: Skript na inventár
+Vytvor nový skript s názvom InventoryManager a priraď ho k objektu Canvas alebo inému vhodnému objektu.
+
+Kód: InventoryManager.cs
+csharp
+Copy code
+using UnityEngine;
+using UnityEngine.UI;
+using System.Collections.Generic;
+
+public class InventoryManager : MonoBehaviour
+{
+    public InputField inputField;      // Vstupné pole na pridanie predmetu
+    public Button addButton;          // Tlačidlo na pridanie predmetu
+    public GameObject inventoryGrid;  // Referencia na inventárnu mriežku
+    public GameObject itemPrefab;     // Prefab pre zobrazenie predmetu
+
+    private List<string> inventory = new List<string>(); // Zoznam predmetov v inventári
+
+    void Start()
+    {
+        addButton.onClick.AddListener(AddItemToInventory); // Pripojenie funkcie k tlačidlu
+    }
+
+    void AddItemToInventory()
+    {
+        string inputText = inputField.text.ToLower(); // Získanie vstupu
+
+        // Overenie platnosti vstupu
+        if (inputText == "kameň" || inputText == "papier" || inputText == "nožnice")
+        {
+            // Pridanie predmetu do zoznamu
+            inventory.Add(inputText);
+            Debug.Log($"Pridané do inventára: {inputText}");
+
+            // Vytvorenie novej ikony predmetu
+            GameObject newItem = Instantiate(itemPrefab, inventoryGrid.transform);
+            Text itemText = newItem.GetComponentInChildren<Text>(); // Predpokladáme, že prefab obsahuje Text
+            if (itemText != null)
+            {
+                itemText.text = inputText; // Nastavenie názvu predmetu
+            }
+
+            inputField.text = ""; // Vymazanie vstupného poľa
+        }
+        else
+        {
+            Debug.Log("Neplatný predmet. Zadaj 'kameň', 'papier' alebo 'nožnice'.");
+        }
+    }
+}
+Krok 3: Vytvorenie prefabov
+Prefab predmetu:
+Vytvor nový GameObject (UI → Button) a nastav jeho veľkosť (napr. 100x100).
+Pridaj komponent Text do tohto tlačidla na zobrazenie názvu predmetu.
+
+
+
+
+
+You said:
+pokračuj v tom
+ChatGPT said:
+ChatGPT
+Krok 3: Vytvorenie prefabov (pokračovanie)
+Prefab uloženie:
+
+Prefab tlačidla, ktoré si vytvoril, ulož ako Prefab:
+V hierarchii klikni pravým tlačidlom na tlačidlo → Prefab → Unpack Completely.
+Pretiahni tlačidlo z hierarchie do priečinka projektu (napr. Assets/Prefabs) a ulož ho ako ItemPrefab.
+Uprav tlačidlo:
+
+Odstráň funkciu Button (alebo ju nechaj, ak by si chcel neskôr klikateľné predmety).
+Uisti sa, že obsahuje komponent Text na zobrazenie názvu predmetu.
+Krok 4: Nastavenie inventára v scéne
+Inventárna mriežka:
+Vyber inventárnu mriežku (kde si pridal Grid Layout Group).
+Nastav parametre:
+Cell Size: napr. 100x100 (alebo podľa veľkosti ikon predmetov).
+Spacing: 10x10 (alebo akékoľvek vhodné rozostupy medzi ikonami).
+Priraď komponenty:
+Pretiahni Input Field do poľa InputField v skripte.
+Pretiahni Button do poľa AddButton.
+Pretiahni Grid Layout Group objekt do poľa InventoryGrid.
+Pretiahni uložený prefab (ItemPrefab) do poľa ItemPrefab.
+Krok 5: Testovanie a Rozšírenie
+Testuj hru:
+
+Spusti hru.
+Zadaj „kameň“, „papier“ alebo „nožnice“ do vstupného poľa.
+Po kliknutí na tlačidlo by sa mal vytvoriť nový predmet v inventári (zobrazený v mriežke).
+Rozšírenia (voliteľné):
+
+Pridaj ikony: Pre každé slovo (kameň, papier, nožnice) môžeš pridať unikátnu ikonu:
+Rozšír prefab a pridaj komponent Image.
+Podľa zadaného slova nastav ikonu (napr. kameň = obrázok kameňa).
+Odstránenie predmetu: Umožni kliknúť na predmet a odstrániť ho z inventára.
+Uloženie inventára: Ulož inventár pomocou PlayerPrefs alebo iného systému.
