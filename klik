@@ -1,0 +1,32 @@
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+
+public class Presuvac : MonoBehaviour
+{
+    private List<string> presuvacList = new List<string>();
+
+    public TMP_InputField inputField; // Input field for text input
+    public TMP_Text outputText;       // Text field to display output
+    public GameObject textPrefab;    // Prefab for creating new text objects
+    public Transform parentPanel;    // Parent panel to contain new text objects
+
+    public void Klik()
+    {
+        string input = inputField.text; // Get text from input field
+        if (!string.IsNullOrEmpty(input)) // Check if the input is not empty
+        {
+            presuvacList.Add(input);  // Add input to the list
+            CreateTextObject(input); // Create a new text object on the screen
+            inputField.text = "";    // Clear the input field
+        }
+    }
+
+    private void CreateTextObject(string text)
+    {
+        GameObject newTextObject = Instantiate(textPrefab, parentPanel);
+        TMP_Text newText = newTextObject.GetComponent<TMP_Text>();
+        newText.text = text;
+    }
+}
