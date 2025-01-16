@@ -7,19 +7,19 @@ public class Presuvac : MonoBehaviour
 {
     private List<string> presuvacList = new List<string>();
 
-    public TMP_InputField inputField; // Input field for text input
-    public TMP_Text outputText;       // Text field to display output
-    public GameObject textPrefab;    // Prefab for creating new text objects
-    public Transform parentPanel;    // Parent panel to contain new text objects
+    public TMP_InputField inputField; 
+    public TMP_Text outputText;       
+    public GameObject textPrefab;    
+    public Transform parentPanel;    
 
     public void Klik()
     {
-        string input = inputField.text; // Get text from input field
-        if (!string.IsNullOrEmpty(input)) // Check if the input is not empty
+        string input = inputField.text; 
+        if (!string.IsNullOrEmpty(input)) 
         {
-            presuvacList.Add(input);  // Add input to the list
-            CreateTextObject(input); // Create a new text object on the screen
-            inputField.text = "";    // Clear the input field
+            presuvacList.Add(input);  
+            CreateTextObject(input); 
+            inputField.text = "";    
         }
     }
 
